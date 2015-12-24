@@ -2,12 +2,30 @@ package me.anhvannguyen.android.annotes.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
 
 public class NotesContentProvider extends ContentProvider {
+
+    private UriMatcher mUriMatcher = buildUriMatcher();
+    private DBOpenHelper mOpenHelper;
+
+    private static final int NOTE = 100;
+    private static final int NOTE_WITH_ID = 101;
+
+    private static UriMatcher buildUriMatcher() {
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = NotesContract.CONTENT_AUTHORITY;
+
+        matcher.addURI(authority, NotesContract.PATH_NOTE, NOTE);
+        matcher.addURI(authority, NotesContract.PATH_NOTE + "/#", NOTE_WITH_ID);
+        
+        return matcher;
+    }
+
     @Override
     public boolean onCreate() {
         return false;

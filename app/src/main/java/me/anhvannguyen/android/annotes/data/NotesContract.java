@@ -4,6 +4,10 @@ import android.provider.BaseColumns;
 
 public class NotesContract {
 
+    public static final String CONTENT_AUTHORITY = "me.anhvannguyen.android.annotes";
+
+    public static final String PATH_NOTE = "note";
+
     public static class NoteEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "notes";
