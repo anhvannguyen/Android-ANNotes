@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditorActivity"></activity>
+        <provider
+            android:authorities="me.anhvannguyen.android.annotes"
+            android:name=".data.NotesContentProvider"/>
     </application>
 
 </manifest>
