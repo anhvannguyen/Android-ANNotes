@@ -22,13 +22,14 @@ public class NotesContentProvider extends ContentProvider {
 
         matcher.addURI(authority, NotesContract.PATH_NOTE, NOTE);
         matcher.addURI(authority, NotesContract.PATH_NOTE + "/#", NOTE_WITH_ID);
-        
+
         return matcher;
     }
 
     @Override
     public boolean onCreate() {
-        return false;
+        mOpenHelper = new DBOpenHelper(getContext());
+        return true;
     }
 
     @Nullable
@@ -57,5 +58,11 @@ public class NotesContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
+    }
+
+    @Override
+    public void shutdown() {
+        mOpenHelper.close();
+        super.shutdown();
     }
 }
