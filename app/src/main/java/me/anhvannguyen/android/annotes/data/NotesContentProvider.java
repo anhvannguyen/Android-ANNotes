@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 
 public class NotesContentProvider extends ContentProvider {
 
-    private UriMatcher mUriMatcher = buildUriMatcher();
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
     private DBOpenHelper mOpenHelper;
 
     private static final int NOTE = 100;
@@ -41,7 +41,16 @@ public class NotesContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case NOTE:
+                return NotesContract.NoteEntry.CONTENT_TYPE;
+            case NOTE_WITH_ID:
+                return NotesContract.NoteEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
     }
 
     @Nullable
