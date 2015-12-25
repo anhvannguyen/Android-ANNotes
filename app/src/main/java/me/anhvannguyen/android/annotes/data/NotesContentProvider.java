@@ -151,7 +151,37 @@ public class NotesContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        int rowsUpdated;
+
+        switch (match) {
+            case NOTE:
+                rowsUpdated = db.update(
+                        NotesContract.NoteEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            case NOTE_WITH_ID:
+                String noteId = NotesContract.NoteEntry.getNoteId(uri);
+                rowsUpdated = db.update(
+                        NotesContract.NoteEntry.TABLE_NAME,
+                        values,
+                        NotesContract.NoteEntry._ID + " = ?",
+                        new String[] { noteId }
+                );
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     @Override
