@@ -27,7 +27,7 @@ public class MainActivityFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main, container, false);
 
-        mNotesRecyclerAdapter = new NotesRecyclerAdapter(getActivity(), fakeData);
+        mNotesRecyclerAdapter = new NotesRecyclerAdapter(getActivity());
 
         mNotesRecyclerView = (RecyclerView) rootView.findViewById(R.id.notes_recyclerview);
         mNotesRecyclerView.setHasFixedSize(true);
