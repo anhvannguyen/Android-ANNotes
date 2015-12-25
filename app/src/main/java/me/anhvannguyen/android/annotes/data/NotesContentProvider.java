@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -35,7 +36,38 @@ public class NotesContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+
+        Cursor returnCursor;
+        switch (match) {
+            case NOTE:
+                returnCursor = db.query(
+                        NotesContract.NoteEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case NOTE_WITH_ID:
+                String noteId = NotesContract.NoteEntry.getNoteId(uri);
+                returnCursor = db.query(
+                        NotesContract.NoteEntry.TABLE_NAME,
+                        projection,
+                        NotesContract.NoteEntry._ID + " = ?",
+                        new String[]{noteId},
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        return returnCursor;
     }
 
     @Nullable
