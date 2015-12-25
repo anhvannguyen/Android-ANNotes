@@ -59,7 +59,7 @@ public class NotesContentProvider extends ContentProvider {
                         NotesContract.NoteEntry.TABLE_NAME,
                         projection,
                         NotesContract.NoteEntry._ID + " = ?",
-                        new String[]{noteId},
+                        new String[] { noteId },
                         null,
                         null,
                         sortOrder
@@ -115,7 +115,38 @@ public class NotesContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        int rowsDeleted;
+
+        // this makes delete all rows return the number of rows deleted
+        if (selection == null)
+            selection = "1";
+
+        switch (match) {
+            case NOTE:
+                rowsDeleted = db.delete(
+                        NotesContract.NoteEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            case NOTE_WITH_ID:
+                String noteId = NotesContract.NoteEntry.getNoteId(uri);
+                rowsDeleted = db.delete(
+                        NotesContract.NoteEntry.TABLE_NAME,
+                        NotesContract.NoteEntry._ID + " = ?",
+                        new String[] { noteId }
+                );
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     @Override
