@@ -1,6 +1,8 @@
 package me.anhvannguyen.android.annotes.data;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.UriMatcher;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -27,5 +29,13 @@ public class NotesContract {
         public static final String COLUMN_TEXT = "text";
 
         public static final String COLUMN_DATE_CREATED = "date_created";
+
+        public static final String getNoteId(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+        public static Uri buildNoteUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 }
