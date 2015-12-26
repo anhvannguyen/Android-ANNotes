@@ -72,7 +72,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 generateFakeData("Bread");
                 generateFakeData("Egg");
                 getLoaderManager().restartLoader(LOADER_NOTE, null, this);
-                Snackbar.make(getView(), "Sample data added", Snackbar.LENGTH_LONG)
+                Snackbar.make(getView(), "Sample data added", Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+                return true;
+            case R.id.action_delete_all:
+                getContext().getContentResolver().delete(
+                        NotesContract.NoteEntry.CONTENT_URI,
+                        null,
+                        null
+                );
+                getLoaderManager().restartLoader(LOADER_NOTE, null, this);
+                Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
         }
 
