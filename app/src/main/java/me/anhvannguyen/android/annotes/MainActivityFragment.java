@@ -83,7 +83,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 );
                 getLoaderManager().restartLoader(LOADER_NOTE, null, this);
                 Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                        .setAction("Undo", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        }).show();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
