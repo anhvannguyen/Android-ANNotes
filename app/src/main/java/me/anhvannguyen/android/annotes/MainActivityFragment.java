@@ -1,9 +1,14 @@
 package me.anhvannguyen.android.annotes;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +23,8 @@ import me.anhvannguyen.android.annotes.data.NotesContract;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int LOADER_NOTE = 0;
 
     private RecyclerView mNotesRecyclerView;
     private NotesRecyclerAdapter mNotesRecyclerAdapter;
@@ -27,6 +33,12 @@ public class MainActivityFragment extends Fragment {
 
     public MainActivityFragment() {
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(LOADER_NOTE, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -58,6 +70,7 @@ public class MainActivityFragment extends Fragment {
                 generateFakeData("Milk");
                 generateFakeData("Bread");
                 generateFakeData("Egg");
+                getLoaderManager().restartLoader(LOADER_NOTE, null, this);
         }
 
         return super.onOptionsItemSelected(item);
@@ -71,5 +84,28 @@ public class MainActivityFragment extends Fragment {
                 NotesContract.NoteEntry.CONTENT_URI,
                 values
         );
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String sortOrder = NotesContract.NoteEntry.COLUMN_DATE_CREATED + " DESC";
+        return new CursorLoader(
+                getActivity(),
+                NotesContract.NoteEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mNotesRecyclerAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mNotesRecyclerAdapter.swapCursor(null);
     }
 }
