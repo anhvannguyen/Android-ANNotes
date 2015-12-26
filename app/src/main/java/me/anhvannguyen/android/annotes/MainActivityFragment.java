@@ -21,16 +21,21 @@ import android.view.ViewGroup;
 
 import me.anhvannguyen.android.annotes.data.NotesContract;
 
-/**
- * A placeholder fragment containing a simple view.
- */
+
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int LOADER_NOTE = 0;
 
+    private static final String[] NOTE_PROJECTION = {
+            NotesContract.NoteEntry._ID,
+            NotesContract.NoteEntry.COLUMN_TEXT,
+            NotesContract.NoteEntry.COLUMN_DATE_CREATED
+    };
+    public static final int COL_ID = 0;
+    public static final int COL_TEXT = 1;
+    public static final int COL_DATE_CREATED = 2;
+
     private RecyclerView mNotesRecyclerView;
     private NotesRecyclerAdapter mNotesRecyclerAdapter;
-
-    private static final String[] fakeData = {"eggs", "milk", "bread", "butter", "strawberry"};
 
     public MainActivityFragment() {
         setHasOptionsMenu(true);
@@ -76,19 +81,23 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         .setAction("Action", null).show();
                 return true;
             case R.id.action_delete_all:
-                getContext().getContentResolver().delete(
-                        NotesContract.NoteEntry.CONTENT_URI,
-                        null,
-                        null
-                );
-                getLoaderManager().restartLoader(LOADER_NOTE, null, this);
-                Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_LONG)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                if (mNotesRecyclerAdapter.getItemCount() == 0) {
+                    Snackbar.make(getView(), "No items to delete", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    getContext().getContentResolver().delete(
+                            NotesContract.NoteEntry.CONTENT_URI,
+                            null,
+                            null
+                    );
+                    getLoaderManager().restartLoader(LOADER_NOTE, null, this);
+                    Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_LONG)
+                            .setAction("Undo", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
-                            }
-                        }).show();
+                                }
+                            }).show();
+                }
                 return true;
         }
 
@@ -111,7 +120,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         return new CursorLoader(
                 getActivity(),
                 NotesContract.NoteEntry.CONTENT_URI,
-                null,
+                NOTE_PROJECTION,
                 null,
                 null,
                 sortOrder
