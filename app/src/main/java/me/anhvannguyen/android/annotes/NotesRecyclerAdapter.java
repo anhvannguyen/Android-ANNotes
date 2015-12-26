@@ -8,15 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import me.anhvannguyen.android.annotes.data.NotesContract;
-
 
 public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder> {
     private Context mContext;
-//    private List<String> mNoteList;
     private Cursor mCursor;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -30,17 +24,7 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
 
     public NotesRecyclerAdapter(Context context) {
         mContext = context;
-//        mNoteList = new ArrayList<String>();
     }
-
-//    public NotesRecyclerAdapter(Context context, String[] data) {
-//        mContext = context;
-//        mNoteList = new ArrayList<String>();
-//        for (String s : data) {
-//            mNoteList.add(s);
-//        }
-//        notifyDataSetChanged();
-//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,9 +36,8 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-        int noteIndex = mCursor.getColumnIndex(NotesContract.NoteEntry.COLUMN_TEXT);
-        String noteString = mCursor.getString(noteIndex);
 
+        String noteString = mCursor.getString(MainActivityFragment.COL_TEXT);
         holder.mNoteTextView.setText(noteString);
     }
 
