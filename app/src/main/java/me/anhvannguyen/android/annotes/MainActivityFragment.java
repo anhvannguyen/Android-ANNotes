@@ -99,9 +99,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                             }).show();
                 }
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void generateFakeData(String fakeNote) {
