@@ -1,6 +1,7 @@
 package me.anhvannguyen.android.annotes;
 
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import me.anhvannguyen.android.annotes.data.NotesContract;
 
@@ -19,6 +21,7 @@ import me.anhvannguyen.android.annotes.data.NotesContract;
  */
 public class EditorFragment extends Fragment {
 
+    private EditText mNoteEditText;
 
     public EditorFragment() {
         // Required empty public constructor
@@ -31,6 +34,8 @@ public class EditorFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_editor, container, false);
+
+        mNoteEditText = (EditText) rootView.findViewById(R.id.note_edittext);
 
         return rootView;
     }
@@ -46,7 +51,15 @@ public class EditorFragment extends Fragment {
 
         switch (id) {
             case R.id.action_save_note:
-                Snackbar.make(getView(), "Save Pressed", Snackbar.LENGTH_SHORT).show();
+                ContentValues values = new ContentValues();
+                values.put(NotesContract.NoteEntry.COLUMN_TEXT, mNoteEditText.getText().toString());
+
+                getContext().getContentResolver().insert(
+                        NotesContract.NoteEntry.CONTENT_URI,
+                        values
+                );
+                getActivity().finish();
+//                Snackbar.make(getView(), "Save Pressed", Snackbar.LENGTH_SHORT).show();
                 return true;
             case R.id.action_delete_note:
                 Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_SHORT).show();
