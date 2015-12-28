@@ -12,18 +12,32 @@ import android.widget.TextView;
 public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder> {
     private Context mContext;
     private Cursor mCursor;
+    private NoteAdapterOnClickHandler mClickHandler;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mNoteTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mNoteTextView = (TextView) itemView.findViewById(R.id.list_item_title);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            mCursor.moveToPosition(adapterPosition);
+            mClickHandler.onClick(this);
         }
     }
 
-    public NotesRecyclerAdapter(Context context) {
+    public static interface NoteAdapterOnClickHandler {
+        void onClick(ViewHolder viewHolder);
+    }
+
+    public NotesRecyclerAdapter(Context context, NoteAdapterOnClickHandler clickHandler) {
         mContext = context;
+        mClickHandler = clickHandler;
     }
 
     @Override
