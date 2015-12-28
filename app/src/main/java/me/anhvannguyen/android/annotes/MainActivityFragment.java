@@ -52,7 +52,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_main, container, false);
 
-        mNotesRecyclerAdapter = new NotesRecyclerAdapter(getActivity());
+        mNotesRecyclerAdapter = new NotesRecyclerAdapter(getActivity(), new NotesRecyclerAdapter.NoteAdapterOnClickHandler() {
+            @Override
+            public void onClick(NotesRecyclerAdapter.ViewHolder viewHolder) {
+                if (mNotesRecyclerAdapter.getCursor() != null) {
+                    String noteText = mNotesRecyclerAdapter.getCursor().getString(COL_TEXT);
+                    Snackbar.make(getView(), mNotesRecyclerAdapter.getCursor().getPosition() + ": " + noteText, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         mNotesRecyclerView = (RecyclerView) rootView.findViewById(R.id.notes_recyclerview);
         mNotesRecyclerView.setHasFixedSize(true);
