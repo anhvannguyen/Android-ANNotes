@@ -115,6 +115,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(LOADER_NOTE, null, this);
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String sortOrder = NotesContract.NoteEntry.COLUMN_DATE_CREATED + " DESC";
         return new CursorLoader(
