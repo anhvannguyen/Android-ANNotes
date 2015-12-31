@@ -63,7 +63,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     long id = mNotesRecyclerAdapter.getCursor().getLong(COL_ID);
                     Uri noteUri = NotesContract.NoteEntry.buildNoteUri(id);
                     Intent intent = new Intent(getActivity(), EditorActivity.class);
-                    intent.putExtra(EditorFragment.NOTE_EXTRA, noteUri);
+                    intent.setData(noteUri);
                     startActivity(intent);
                 }
             }
