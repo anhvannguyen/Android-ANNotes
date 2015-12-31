@@ -20,6 +20,7 @@ import me.anhvannguyen.android.annotes.data.NotesContract;
  * A simple {@link Fragment} subclass.
  */
 public class EditorFragment extends Fragment {
+    public static final String NOTE_EXTRA = "note_extra";
 
     private EditText mNoteEditText;
 

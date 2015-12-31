@@ -1,7 +1,9 @@
 package me.anhvannguyen.android.annotes;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -56,8 +58,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onClick(NotesRecyclerAdapter.ViewHolder viewHolder) {
                 if (mNotesRecyclerAdapter.getCursor() != null) {
-                    String noteText = mNotesRecyclerAdapter.getCursor().getString(COL_TEXT);
-                    Snackbar.make(getView(), mNotesRecyclerAdapter.getCursor().getPosition() + ": " + noteText, Snackbar.LENGTH_SHORT).show();
+//                    String noteText = mNotesRecyclerAdapter.getCursor().getString(COL_TEXT);
+//                    Snackbar.make(getView(), mNotesRecyclerAdapter.getCursor().getPosition() + ": " + noteText, Snackbar.LENGTH_SHORT).show();
+                    long id = mNotesRecyclerAdapter.getCursor().getLong(COL_ID);
+                    Uri noteUri = NotesContract.NoteEntry.buildNoteUri(id);
+                    Intent intent = new Intent(getActivity(), EditorActivity.class);
+                    intent.putExtra(EditorFragment.NOTE_EXTRA, noteUri);
+                    startActivity(intent);
                 }
             }
         });
