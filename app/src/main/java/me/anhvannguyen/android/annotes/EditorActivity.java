@@ -13,7 +13,11 @@ public class EditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editor);
 
         if (savedInstanceState == null) {
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(EditorFragment.NOTE_URI, getIntent().getData());
+
             EditorFragment fragment = new EditorFragment();
+            fragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.note_editor_container, fragment)
