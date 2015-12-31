@@ -2,6 +2,7 @@ package me.anhvannguyen.android.annotes;
 
 
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ public class EditorFragment extends Fragment {
     public static final String NOTE_URI = "note_uri";
 
     private EditText mNoteEditText;
+    private Uri mNoteUri;
 
     public EditorFragment() {
         // Required empty public constructor
@@ -36,7 +38,15 @@ public class EditorFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_editor, container, false);
 
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mNoteUri = arguments.getParcelable(NOTE_URI);
+        }
+
         mNoteEditText = (EditText) rootView.findViewById(R.id.note_edittext);
+        if (mNoteUri != null) {
+            mNoteEditText.setText(mNoteUri.toString());
+        }
 
         return rootView;
     }
