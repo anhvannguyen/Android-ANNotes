@@ -92,10 +92,23 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
                 ContentValues values = new ContentValues();
                 values.put(NotesContract.NoteEntry.COLUMN_TEXT, mNoteEditText.getText().toString());
 
-                getContext().getContentResolver().insert(
-                        NotesContract.NoteEntry.CONTENT_URI,
-                        values
-                );
+                switch (mActionString) {
+                    case Intent.ACTION_EDIT:
+                        getContext().getContentResolver().update(
+                                mNoteUri,
+                                values,
+                                null,
+                                null
+                        );
+                        break;
+                    case Intent.ACTION_INSERT:
+                        getContext().getContentResolver().insert(
+                                NotesContract.NoteEntry.CONTENT_URI,
+                                values
+                        );
+                        break;
+                }
+
                 getActivity().finish();
 //                Snackbar.make(getView(), "Save Pressed", Snackbar.LENGTH_SHORT).show();
                 return true;
