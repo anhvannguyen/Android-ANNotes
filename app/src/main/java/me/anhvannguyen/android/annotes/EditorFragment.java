@@ -2,6 +2,7 @@ package me.anhvannguyen.android.annotes;
 
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
 
     private EditText mNoteEditText;
     private Uri mNoteUri;
+    private String mActionString;
 
     public EditorFragment() {
         // Required empty public constructor
@@ -60,7 +62,11 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
 
         mNoteEditText = (EditText) rootView.findViewById(R.id.note_edittext);
         if (mNoteUri != null) {
-            mNoteEditText.setText(mNoteUri.toString());
+            mActionString = Intent.ACTION_EDIT;
+            getActivity().setTitle("Edit Note");
+        } else {
+            mActionString = Intent.ACTION_INSERT;
+            getActivity().setTitle("New Note");
         }
 
         return rootView;
