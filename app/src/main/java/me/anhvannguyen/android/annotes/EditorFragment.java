@@ -123,6 +123,18 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteMenuItem = menu.findItem(R.id.action_delete_note);
+        switch (mActionString) {
+            case Intent.ACTION_INSERT:
+                deleteMenuItem.setVisible(false);
+                break;
+            case Intent.ACTION_EDIT:
+                deleteMenuItem.setVisible(true);
+        }
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (mNoteUri != null) {
             return new CursorLoader(
