@@ -113,7 +113,15 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
 //                Snackbar.make(getView(), "Save Pressed", Snackbar.LENGTH_SHORT).show();
                 return true;
             case R.id.action_delete_note:
-                Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_SHORT).show();
+                if (mNoteUri != null) {
+                    getContext().getContentResolver().delete(
+                            mNoteUri,
+                            null,
+                            null
+                    );
+                    getActivity().finish();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
