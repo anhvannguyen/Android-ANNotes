@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <ListPreference
+        android:title="Sort Order"
+        android:key="sortorder_key"
+        android:entries="@array/pref_sortorder_entry"
+        android:entryValues="@array/pref_sortorder_values"
+        android:defaultValue="@string/pref_sortorder_date_value" />
 </PreferenceScreen>
