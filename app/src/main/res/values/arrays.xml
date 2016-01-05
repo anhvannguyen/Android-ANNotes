@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="pref_sortorder_entry">
+        <item>@string/pref_sortorder_date_label</item>
+        <item>@string/pref_sortorder_title_label</item>
+    </string-array>
+
+    <string-array name="pref_sortorder_values">
+        <item>@string/pref_sortorder_date_value</item>
+        <item>@string/pref_sortorder_title_value</item>
+    </string-array>
+</resources>

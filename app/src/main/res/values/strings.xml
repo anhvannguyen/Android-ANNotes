@@ -1,10 +1,21 @@
 <resources>
     <string name="app_name">AN Notes</string>
+
+    <!-- Menu Item Strings -->
     <string name="action_settings">Settings</string>
     <string name="action_sample_label">Generate Data</string>
     <string name="action_delete_all">Delete All</string>
     <string name="action_delete_note">Delete</string>
     <string name="action_save_note">Save</string>
+
+    <!-- Preference Sort Order Strings -->
+    <string name="pref_sortorder_key">sortorder_key</string>
+    <string name="pref_sortorder_title">Sort Order</string>
+    <string name="pref_sortorder_date_label">Date (Newest)</string>
+    <string name="pref_sortorder_title_label">Alphabetical</string>
+    <string name="pref_sortorder_date_value">0</string>
+    <string name="pref_sortorder_title_value">1</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
