@@ -16,7 +16,6 @@
     <string name="pref_sortorder_date_value">0</string>
     <string name="pref_sortorder_title_value">1</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Editor Strings -->
+    <string name="editor_note_label">Note:</string>
 </resources>

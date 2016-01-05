@@ -5,11 +5,10 @@
     android:orientation="horizontal"
     tools:context="me.anhvannguyen.android.annotes.EditorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Note:" />
+        android:text="@string/editor_note_label" />
 
     <EditText
         android:id="@+id/note_edittext"
