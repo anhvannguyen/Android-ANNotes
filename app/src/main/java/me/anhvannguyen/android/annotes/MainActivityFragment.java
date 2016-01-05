@@ -14,6 +14,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -137,7 +138,20 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String sortOrder = NotesContract.NoteEntry.COLUMN_DATE_CREATED + " DESC";
+        String sortOrder;
+        int sortType = Utility.getSortingPreference(getActivity());
+        switch (sortType) {
+            case Utility.SORT_DATE:
+                // Sort by date crated, newest first
+                sortOrder = NotesContract.NoteEntry.COLUMN_DATE_CREATED + " DESC";
+                break;
+            case Utility.SORT_TITLE:
+                // Sort by note title ignoring case
+                sortOrder = NotesContract.NoteEntry.COLUMN_TEXT + " COLLATE NOCASE ASC";
+                break;
+            default:
+                sortOrder = null;
+        }
         return new CursorLoader(
                 getActivity(),
                 NotesContract.NoteEntry.CONTENT_URI,
