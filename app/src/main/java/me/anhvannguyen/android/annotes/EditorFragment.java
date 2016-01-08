@@ -1,7 +1,9 @@
 package me.anhvannguyen.android.annotes;
 
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -114,14 +116,31 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
                 return true;
             case R.id.action_delete_note:
 //                Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_SHORT).show();
-                if (mNoteUri != null) {
-                    getContext().getContentResolver().delete(
-                            mNoteUri,
-                            null,
-                            null
-                    );
-                    getActivity().finish();
-                }
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
+                alertBuilder.setMessage("Are you sure you want to delete this note?")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (mNoteUri != null) {
+                                    getContext().getContentResolver().delete(
+                                            mNoteUri,
+                                            null,
+                                            null
+                                    );
+                                    getActivity().finish();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing, close dialog box
+                                dialog.cancel();
+                            }
+                        })
+                .create()
+                .show();
+                
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
