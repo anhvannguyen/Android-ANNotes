@@ -112,10 +112,8 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
                 }
 
                 getActivity().finish();
-//                Snackbar.make(getView(), "Save Pressed", Snackbar.LENGTH_SHORT).show();
                 return true;
             case R.id.action_delete_note:
-//                Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_SHORT).show();
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
                 alertBuilder.setMessage("Are you sure you want to delete this note?")
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
@@ -140,7 +138,6 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
                         })
                 .create()
                 .show();
-                
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
