@@ -58,7 +58,7 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
 
-        String noteString = mCursor.getString(MainActivityFragment.COL_TEXT);
+        String noteString = mCursor.getString(MainActivityFragment.COL_TEXT).trim();
         holder.mNoteTextView.setText(noteString);
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
