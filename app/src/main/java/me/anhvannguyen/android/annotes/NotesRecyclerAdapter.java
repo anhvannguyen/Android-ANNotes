@@ -57,12 +57,13 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
+        long id = mCursor.getLong(MainActivityFragment.COL_ID);
 
         String noteString = mCursor.getString(MainActivityFragment.COL_TEXT).trim();
         holder.mNoteTextView.setText(noteString);
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
-        int iconColor = generator.getRandomColor();
+        int iconColor = generator.getColor(id);
         TextDrawable drawable = TextDrawable.builder().buildRoundRect(noteString.substring(0, 1).toUpperCase(), iconColor, 10);
         holder.mIconImageView.setImageDrawable(drawable);
     }
