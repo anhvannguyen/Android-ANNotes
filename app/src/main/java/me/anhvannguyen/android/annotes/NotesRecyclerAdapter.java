@@ -2,11 +2,16 @@ package me.anhvannguyen.android.annotes;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 
 public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder> {
@@ -16,10 +21,12 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mNoteTextView;
+        public final ImageView mIconImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mNoteTextView = (TextView) itemView.findViewById(R.id.list_item_title);
+            mIconImageView = (ImageView) itemView.findViewById(R.id.list_item_icon);
             itemView.setOnClickListener(this);
         }
 
@@ -53,6 +60,11 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
 
         String noteString = mCursor.getString(MainActivityFragment.COL_TEXT);
         holder.mNoteTextView.setText(noteString);
+
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        int iconColor = generator.getRandomColor();
+        TextDrawable drawable = TextDrawable.builder().buildRound(noteString.substring(0, 1).toUpperCase(), iconColor);
+        holder.mIconImageView.setImageDrawable(drawable);
     }
 
     @Override
