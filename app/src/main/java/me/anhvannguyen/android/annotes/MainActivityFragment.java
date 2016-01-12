@@ -92,7 +92,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 generateFakeData("Milk");
                 generateFakeData("Bread");
                 generateFakeData("Egg");
-                getLoaderManager().restartLoader(LOADER_NOTE, null, this);
+                restartLoader();
                 Snackbar.make(getView(), "Sample data added", Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
                 return true;
@@ -100,17 +100,44 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 if (mNotesRecyclerAdapter.getItemCount() == 0) {
                     Snackbar.make(getView(), "No items to delete", Snackbar.LENGTH_SHORT).show();
                 } else {
-                    getContext().getContentResolver().delete(
-                            NotesContract.NoteEntry.CONTENT_URI,
-                            null,
-                            null
-                    );
-                    getLoaderManager().restartLoader(LOADER_NOTE, null, this);
-                    Snackbar.make(getView(), "Delete Pressed", Snackbar.LENGTH_LONG)
+//                    getContext().getContentResolver().delete(
+//                            NotesContract.NoteEntry.CONTENT_URI,
+//                            null,
+//                            null
+//                    );
+//                    restartLoader();
+                    // Temporary hide the data from the user
+                    mNotesRecyclerAdapter.emptyData();
+                    Snackbar.make(getView(), "All items deleted", Snackbar.LENGTH_LONG)
+                            .setCallback(new Snackbar.Callback() {
+                                @Override
+                                public void onDismissed(Snackbar snackbar, int event) {
+                                    // Delete all items when user dismiss the Snackbar
+                                    switch (event) {
+                                        case Snackbar.Callback.DISMISS_EVENT_SWIPE:
+                                            getContext().getContentResolver().delete(
+                                                    NotesContract.NoteEntry.CONTENT_URI,
+                                                    null,
+                                                    null
+                                            );
+                                            restartLoader();
+                                            break;
+                                        case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
+                                            getContext().getContentResolver().delete(
+                                                    NotesContract.NoteEntry.CONTENT_URI,
+                                                    null,
+                                                    null
+                                            );
+                                            restartLoader();
+                                            break;
+                                    }
+                                }
+                            })
                             .setAction("Undo", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-
+                                    // Data has not been deleted, restart loader to display data
+                                    restartLoader();
                                 }
                             }).show();
                 }
@@ -133,6 +160,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
+        restartLoader();
+    }
+
+    private void restartLoader() {
         getLoaderManager().restartLoader(LOADER_NOTE, null, this);
     }
 
