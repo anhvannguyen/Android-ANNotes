@@ -112,16 +112,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                             .setCallback(new Snackbar.Callback() {
                                 @Override
                                 public void onDismissed(Snackbar snackbar, int event) {
-                                    // Delete all items when user dismiss the Snackbar
+                                    // Delete all items when the Snackbar timesout or user swipe to
+                                    // dismiss
                                     switch (event) {
                                         case Snackbar.Callback.DISMISS_EVENT_SWIPE:
-                                            getContext().getContentResolver().delete(
-                                                    NotesContract.NoteEntry.CONTENT_URI,
-                                                    null,
-                                                    null
-                                            );
-                                            restartLoader();
-                                            break;
                                         case Snackbar.Callback.DISMISS_EVENT_TIMEOUT:
                                             getContext().getContentResolver().delete(
                                                     NotesContract.NoteEntry.CONTENT_URI,
