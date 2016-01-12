@@ -84,4 +84,9 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
     public Cursor getCursor() {
         return mCursor;
     }
+
+    public void emptyData() {
+        mCursor = null;
+        notifyDataSetChanged();
+    }
 }
