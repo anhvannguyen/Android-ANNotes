@@ -91,27 +91,34 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
 
         switch (id) {
             case R.id.action_save_note:
+                String noteString = mNoteEditText.getText().toString();
                 ContentValues values = new ContentValues();
-                values.put(NotesContract.NoteEntry.COLUMN_TEXT, mNoteEditText.getText().toString());
+                values.put(NotesContract.NoteEntry.COLUMN_TEXT, noteString);
 
-                switch (mActionString) {
-                    case Intent.ACTION_EDIT:
-                        getContext().getContentResolver().update(
-                                mNoteUri,
-                                values,
-                                null,
-                                null
-                        );
-                        break;
-                    case Intent.ACTION_INSERT:
-                        getContext().getContentResolver().insert(
-                                NotesContract.NoteEntry.CONTENT_URI,
-                                values
-                        );
-                        break;
+                if (noteString == null || noteString.length() == 0) {
+                    Snackbar.make(getView(), "Note field is empty", Snackbar.LENGTH_SHORT).show();
+                } else if (noteString.matches("^\\s*$")) {
+                    Snackbar.make(getView(), "Note field contains only whitespace", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    switch (mActionString) {
+                        case Intent.ACTION_EDIT:
+                            getContext().getContentResolver().update(
+                                    mNoteUri,
+                                    values,
+                                    null,
+                                    null
+                            );
+                            break;
+                        case Intent.ACTION_INSERT:
+                            getContext().getContentResolver().insert(
+                                    NotesContract.NoteEntry.CONTENT_URI,
+                                    values
+                            );
+                            break;
+                    }
+
+                    getActivity().finish();
                 }
-
-                getActivity().finish();
                 return true;
             case R.id.action_delete_note:
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
