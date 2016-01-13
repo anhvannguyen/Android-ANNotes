@@ -16,6 +16,7 @@
         android:id="@+id/list_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:paddingLeft="8dp"
         android:textSize="@dimen/list_font_size" />
 
