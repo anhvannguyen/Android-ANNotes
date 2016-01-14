@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -42,6 +43,7 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
     public static final int COL_DATE_CREATED = 2;
 
     private EditText mNoteEditText;
+    private TextInputLayout mNoteTextInputLayout;
     private Uri mNoteUri;
     private String mActionString;
 
@@ -61,6 +63,9 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
         if (arguments != null) {
             mNoteUri = arguments.getParcelable(NOTE_URI);
         }
+
+        mNoteTextInputLayout = (TextInputLayout) rootView.findViewById(R.id.note_textinputlayout);
+        mNoteTextInputLayout.setErrorEnabled(true);
 
         mNoteEditText = (EditText) rootView.findViewById(R.id.note_edittext);
         if (mNoteUri != null) {
@@ -93,12 +98,14 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
             case R.id.action_save_note:
                 String noteString = mNoteEditText.getText().toString();
                 ContentValues values = new ContentValues();
-                values.put(NotesContract.NoteEntry.COLUMN_TEXT, noteString);
+                values.put(NotesContract.NoteEntry.COLUMN_TEXT, noteString.trim());
 
                 if (noteString == null || noteString.length() == 0) {
                     Snackbar.make(getView(), "Note field is empty", Snackbar.LENGTH_SHORT).show();
+                    mNoteTextInputLayout.setError("Note field is empty");
                 } else if (noteString.matches("^\\s*$")) {
                     Snackbar.make(getView(), "Note field contains only whitespace", Snackbar.LENGTH_SHORT).show();
+                    mNoteTextInputLayout.setError("Note field contains only whitespace");
                 } else {
                     switch (mActionString) {
                         case Intent.ACTION_EDIT:
