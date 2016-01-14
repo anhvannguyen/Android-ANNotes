@@ -64,8 +64,12 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
         int iconColor = generator.getColor(id);
-        TextDrawable drawable = TextDrawable.builder().buildRoundRect(noteString.substring(0, 1).toUpperCase(), iconColor, 10);
-        holder.mIconImageView.setImageDrawable(drawable);
+        if (noteString.length() > 0 && noteString != null) {
+            TextDrawable drawable = TextDrawable.builder()
+                    .buildRoundRect(noteString.substring(0, 1).toUpperCase(), iconColor, 10);
+            holder.mIconImageView.setImageDrawable(drawable);
+        }
+
     }
 
     @Override
