@@ -15,6 +15,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,7 +67,6 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         mNoteTextInputLayout = (TextInputLayout) rootView.findViewById(R.id.note_textinputlayout);
-        mNoteTextInputLayout.setErrorEnabled(true);
 
         mNoteEditText = (EditText) rootView.findViewById(R.id.note_edittext);
         if (mNoteUri != null) {
@@ -75,6 +76,31 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
             mActionString = Intent.ACTION_INSERT;
             getActivity().setTitle("New Note");
         }
+
+        mNoteTextInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 0) {
+                    mNoteTextInputLayout.setErrorEnabled(true);
+                    mNoteTextInputLayout.setError("Note field is empty");
+                } else if (s.length() > 0 && s.toString().matches("^\\s*$")) {
+                    mNoteTextInputLayout.setErrorEnabled(true);
+                    mNoteTextInputLayout.setError("Note field contains only whitespace");
+                } else {
+                    mNoteTextInputLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         return rootView;
     }
@@ -102,10 +128,10 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
 
                 if (noteString == null || noteString.length() == 0) {
                     Snackbar.make(getView(), "Note field is empty", Snackbar.LENGTH_SHORT).show();
-                    mNoteTextInputLayout.setError("Note field is empty");
+//                    mNoteTextInputLayout.setError("Note field is empty");
                 } else if (noteString.matches("^\\s*$")) {
                     Snackbar.make(getView(), "Note field contains only whitespace", Snackbar.LENGTH_SHORT).show();
-                    mNoteTextInputLayout.setError("Note field contains only whitespace");
+//                    mNoteTextInputLayout.setError("Note field contains only whitespace");
                 } else {
                     switch (mActionString) {
                         case Intent.ACTION_EDIT:
