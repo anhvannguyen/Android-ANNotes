@@ -77,30 +77,32 @@ public class EditorFragment extends Fragment implements LoaderManager.LoaderCall
             getActivity().setTitle("New Note");
         }
 
-        mNoteTextInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        if (mNoteTextInputLayout.getEditText() != null) {
+            mNoteTextInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() <= 0) {
-                    mNoteTextInputLayout.setErrorEnabled(true);
-                    mNoteTextInputLayout.setError("Note field is empty");
-                } else if (s.length() > 0 && s.toString().matches("^\\s*$")) {
-                    mNoteTextInputLayout.setErrorEnabled(true);
-                    mNoteTextInputLayout.setError("Note field contains only whitespace");
-                } else {
-                    mNoteTextInputLayout.setErrorEnabled(false);
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.length() <= 0) {
+                        mNoteTextInputLayout.setErrorEnabled(true);
+                        mNoteTextInputLayout.setError("Note field is empty");
+                    } else if (s.length() > 0 && s.toString().matches("^\\s*$")) {
+                        mNoteTextInputLayout.setErrorEnabled(true);
+                        mNoteTextInputLayout.setError("Note field contains only whitespace");
+                    } else {
+                        mNoteTextInputLayout.setErrorEnabled(false);
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
 
         return rootView;
     }
