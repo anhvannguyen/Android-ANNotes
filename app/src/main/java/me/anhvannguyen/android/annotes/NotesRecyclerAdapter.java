@@ -60,6 +60,10 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
         long id = mCursor.getLong(MainActivityFragment.COL_ID);
 
         String noteString = mCursor.getString(MainActivityFragment.COL_TEXT).trim();
+        int newLine = noteString.indexOf("\n");
+        if (newLine != -1) {
+            noteString = noteString.substring(0, newLine) + "...";
+        }
         holder.mNoteTextView.setText(noteString);
 
         ColorGenerator generator = ColorGenerator.MATERIAL;
